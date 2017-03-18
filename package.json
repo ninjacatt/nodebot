@@ -34,7 +34,7 @@
   },
   "subdomain": "pomodoro",
   "engines": {
-    "node": "0.10.x"
+    "node": "6.10.0"
   },
   "devDependencies": {
     "eslint": "^3.16.1",
@@ -42,7 +42,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.0",
-    "grunt": "~0.4.2",
+    "grunt": "^0.4.5",
     "grunt-env": "~0.4.1",
     "grunt-nodemon": "~0.1.2",
     "localtunnel": "~0.1.3"
