@@ -18,7 +18,9 @@
         "supressTextMessages": "false",
         "mobile": "+12069728056",
         "twilioAssignedPhoneNumber":"+12062070365",
-        "enableAuth": "true"
+        "enableAuth": "true",
+        "BOT_APP_ID":"f3842972-cd43-48c3-a8c3-c77f656791c3",
+        "BOT_APP_PASSWORD":"EHfma3d0srE7ueZi4tGBeTA"
       },
     },
     {
