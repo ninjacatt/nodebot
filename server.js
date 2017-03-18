@@ -10,7 +10,7 @@ const db = require('./server/controllers/db');
 const server = require('http').createServer(app);
 const homeController = require('./server/controllers/homeController');
 const userController = require('./server/controllers/userController');
-const redis = require('redis');
+const botController = require('./server/controllers/bot');
 const pomodoro = require('./server/models/pomodoro');
 
 app.set('view engine', 'ejs');
@@ -25,6 +25,7 @@ app.use(bodyParser.json());
 
 homeController.init(app);
 userController.init(app);
+botController.init(app);
 
 // middleware error handling
 app.use((err, req, res, next) => {
