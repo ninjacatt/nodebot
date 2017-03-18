@@ -1,0 +1,49 @@
+{
+  "name": "pomondoro",
+  "version": "1.0.0",
+  "description": "pomodoro app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://minhdn@bitbucket.org/minhdn/pomondoro.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/minhdn/pomondoro#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "bower": "~1.2.8",
+    "dotenv": "^4.0.0",
+    "ejs": "~0.8.3",
+    "express": "^4.14.1",
+    "jasmine-node": "~1.0.26",
+    "mongoose": "^4.8.7",
+    "oauth": "~0.9.10",
+    "qs": "~0.6.5",
+    "redis": "~0.8.4",
+    "redis-url": "0.1.0",
+    "request": "~2.27.0",
+    "socket.io": "~0.9.11",
+    "twilio": "~2.11.1",
+    "underscore": "~1.4.2",
+    "use-strict": "^1.0.1"
+  },
+  "subdomain": "pomodoro",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "devDependencies": {
+    "eslint": "^3.16.1",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.0",
+    "grunt": "~0.4.2",
+    "grunt-env": "~0.4.1",
+    "grunt-nodemon": "~0.1.2",
+    "localtunnel": "~0.1.3"
+  }
+}
