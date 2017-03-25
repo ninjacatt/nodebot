@@ -2,3 +2,4 @@
 2. deploy to heroku [Done]
 3. Add more fun bot
 4. more with mongodb
+5. Define goal for chatbot
