@@ -1,3 +1,4 @@
+const fetch = require('node-fetch');
 const builder = require('botbuilder');
 
 const env = process.env;
@@ -40,15 +41,26 @@ function init(app) {
       const location = results.response;
       let message = 'Looking for news';
       if (session.dialogData.searchType === 'city') {
-        message += ' around %s...'; // around Seattle...
+        message += ' around %s for you...'; // around Seattle...
       } else {
-        message += '%s...'; // everywhere...
+        message += ' %s for you...'; // everywhere...
       }
       session.send(message, location);
 
       // Get news
-      // GET https://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=983a473c77c541fbb2f0fcb380093f10
+      // GET https://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=<key>
+      fetch(`https://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=${env.NEWS_API_KEY}`)
+      .then(res => res.json())
+      .then((json) => {
+        session.send('I found %d articles:', json.articles.length);
 
+        const responseMessage = new builder.Message()
+                    .attachmentLayout(builder.AttachmentLayout.carousel)
+                    .attachments(json.articles.map(newsAsAttachment));
+
+        session.send(responseMessage);
+        session.endDialog();
+      });
     },
   ]).triggerAction({
     matches: 'GetNews',
@@ -65,16 +77,16 @@ function init(app) {
 }
 
 // Helpers
-function newsAsAttachment(hotel) {
+function newsAsAttachment(news) {
   return new builder.HeroCard()
-      .title(hotel.name)
-      .subtitle('%d stars. %d reviews. From $%d per night.', hotel.rating, hotel.numberOfReviews, hotel.priceStarting)
-      .images([new builder.CardImage().url(hotel.image)])
+      .title(news.title)
+      .subtitle(news.description)
+      .images([new builder.CardImage().url(news.urlToImage)])
       .buttons([
         new builder.CardAction()
             .title('More details')
             .type('openUrl')
-            .value('https://www.bing.com/search?q=hotels+in+' + encodeURIComponent(hotel.location)),
+            .value(news.url),
       ]);
 }
 
