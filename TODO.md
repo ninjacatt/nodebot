@@ -10,3 +10,11 @@ Note:
 3. git minhdevspace
 4. heroku personal gmail
 5. bot framework account minhdn
+
+
+
+[Heroku contains bot codes] ---> [BOT FRAMEWORK] <- [LUIS to understand conversation]
+                                        |
+                                        |
+                                        v
+                                 [newsapi to get latest news]
