@@ -3,8 +3,6 @@ const builder = require('botbuilder');
 const env = process.env;
 
 function init(app) {
-  const id = env.BOT_APP_ID;
-  const pass = env.BOT_APP_PASSWORD;
   // Create chat bot
   const connector = new builder.ChatConnector({
     appId: env.BOT_APP_ID,
