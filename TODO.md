@@ -2,7 +2,10 @@
 2. deploy to heroku [Done]
 3. Add more fun bot [on going]
 4. more with mongodb
-5. Define goal for chatbot
+5. Define goal for chatbot 
+    a. add better news filter
+    b. bot remind me of grocery
+    c. get menu?
 
 Note:
 1. News api account minhdev
@@ -13,8 +16,13 @@ Note:
 
 
 
-[Heroku contains bot codes] ---> [BOT FRAMEWORK] <- [LUIS to understand conversation]
-                                        |
-                                        |
-                                        v
-                                 [newsapi to get latest news]
+[Heroku contains bot codes] <--- [BOT FRAMEWORK] <- [LUIS to understand conversation]
+                                        ^  ^  ^
+                                        |  |__|_______________________________________
+                                        |                       |                    |
+                                        |                       |                    |
+                                        |                       |                 [ Messenger for FB bot ]    
+                                 [newsapi to get latest news]   |
+                                                                |
+                                                                |
+                                                    [Twillio for using bot in sms]  
