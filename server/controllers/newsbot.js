@@ -112,7 +112,7 @@ function init(app) {
   });
 
   bot.dialog('Help', (session) => {
-    session.endDialog('Hi! Try asking me things like \'get latest news in Seattle\', \'show me news today\' or \'get me latest news today\'');
+    session.endDialog('Hi! Try asking me things like \'get news from Times\', \'show me news today\' or \'show me techcrunch news\'');
   }).triggerAction({
     matches: 'Help',
   });
