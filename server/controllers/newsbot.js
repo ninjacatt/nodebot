@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const builder = require('botbuilder');
+const newsSource = require('../resources/newsapi');
 
 const env = process.env;
 
@@ -21,7 +22,6 @@ function init(app) {
 
   bot.dialog('GetNews', [
     (session, args, next) => {
-
       session.send('Welcome to the Keep Me Updated! We are analyzing your message: \'%s\'', session.message.text);
 
       // try extracting entities
@@ -67,6 +67,48 @@ function init(app) {
     onInterrupted: (session) => {
       session.send('Please try again');
     },
+  });
+
+  bot.dialog('GetNewsFromSource', (session, args) => {
+    session.send('Welcome to the Keep Me Updated! We are analyzing your message: \'%s\'', session.message.text);
+
+    // try extracting entities
+    const customNewsOrgEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'NewsOrg');
+
+    if (customNewsOrgEntity && customNewsOrgEntity.entity) {
+      // Okay, seems like we detect a legit new knownOrganization
+      session.send('Looking for news at \'%s\'...', customNewsOrgEntity.entity);
+
+      // Check with our eixsting set of supported new org
+      const formattedNewSource = newsSource.getFormattedSourceNews(customNewsOrgEntity.entity);
+
+      // Get news
+      fetch(`https://newsapi.org/v1/articles?source=${formattedNewSource}&sortBy=latest&apiKey=${env.NEWS_API_KEY}`)
+      .then(res => res.json())
+      .then((json) => {
+        const responseMessage = new builder.Message()
+                    .attachmentLayout(builder.AttachmentLayout.carousel)
+                    .attachments(json.articles.map(newsAsAttachment));
+        session.send(responseMessage);
+        session.endDialog();
+      });
+    } else {
+      session.send('Hmm we don\'t have that source, but here\'s google news...');
+      fetch(`https://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=${env.NEWS_API_KEY}`)
+      .then(res => res.json())
+      .then((json) => {
+        session.send('I found %d articles:', json.articles.length);
+
+        const responseMessage = new builder.Message()
+                    .attachmentLayout(builder.AttachmentLayout.carousel)
+                    .attachments(json.articles.map(newsAsAttachment));
+
+        session.send(responseMessage);
+        session.endDialog();
+      });
+    }
+  }).triggerAction({
+    matches: 'GetNewsFromSource'
   });
 
   bot.dialog('Help', (session) => {
