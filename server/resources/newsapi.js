@@ -1,40 +1,40 @@
 const KnownSources = {
-  'abc-news-au': 'abc news au',
-  'ars-technica': 'ars technica',
+  'abc-news-au': 'Abc News Au',
+  'ars-technica': 'Ars Technica',
   'associated-press': 'Associated Press (AP)',
   'bbc-news': 'BBC News',
-  'bloomberg': 'bloomberg',
+  'bloomberg': 'Bloomberg',
   'breitbart-news': 'Breitbart News ',
-  'business-insider': 'business insider',
-  'cnbc': 'cnbc',
-  'cnn': 'cnn',
-  'engadget': 'engadget',
-  'entertainment-weekly': 'entertainment weekly',
-  'espn': 'espn',
-  'financial-times': 'financial times',
-  'fortune': 'fortune',
-  'hacker-news': 'hacker news',
-  'independent': 'independent',
-  'mashable': 'mashable',
-  'national-geographic': 'national geographic',
-  'new-scientist': 'new scientist',
-  'newsweek': 'newsweek',
-  'new-york-magazine': 'new york magazine (NYC)',
-  'reddit-r-all': 'reddit',
-  'recode': 'recode',
-  'reuters': 'reuters',
-  'techcrunch': 'techcrunch',
-  'techradar': 'techradar',
-  'the-economist': 'the economist',
-  'the-guardian-uk': 'the guardian uk',
-  'the-huffington-post': 'the huffington post',
-  'the-new-york-times': 'the new york times (NYT)',
-  'the-next-web': 'the next web',
-  'the-verge': 'the verge',
-  'the-wall-street-journal': 'the wall street journal (WSJ)',
-  'the-washington-post': 'the washington post',
-  'time': 'time',
-  'usa-today': 'usa today',
+  'business-insider': 'Business Insider',
+  'cnbc': 'CNBC',
+  'cnn': 'CNN',
+  'engadget': 'Engadget',
+  'entertainment-weekly': 'Entertainment Weekly',
+  'espn': 'ESPN',
+  'financial-times': 'Financial Times',
+  'fortune': 'Fortune',
+  'hacker-news': 'Hacker News',
+  'independent': 'Independent',
+  'mashable': 'Mashable',
+  'national-geographic': 'National Geographic',
+  'new-scientist': 'New Scientist',
+  'newsweek': 'Newsweek',
+  'new-york-magazine': 'New York Magazine (NYM)',
+  'reddit-r-all': 'Reddit',
+  'recode': 'Recode',
+  'reuters': 'Reuters',
+  'techcrunch': 'Techcrunch',
+  'techradar': 'Techradar',
+  'the-economist': 'The Economist',
+  'the-guardian-uk': 'The Guardian UK',
+  'the-huffington-post': 'The Huffington Post',
+  'the-new-york-times': 'The New York Times (NYT)',
+  'the-next-web': 'The Next Web',
+  'the-verge': 'The Verge',
+  'the-wall-street-journal': 'The Wall Street Journal (WSJ)',
+  'the-washington-post': 'The Washington Post',
+  'time': 'Time',
+  'usa-today': 'USA Today',
 };
 
 function isSimilar(val1, val2) {
@@ -53,6 +53,17 @@ module.exports = {
       }
     }
     return 'google-news'; // if found nothing, default to google news
+  },
+
+  getAllSources: () => {
+    let sources = '';
+    for (const key in KnownSources) {
+      if (KnownSources.hasOwnProperty(key)) {
+        sources += `${KnownSources[key]}, `;
+      }
+    }
+
+    return sources.slice(0, sources.length - 2);
   },
 };
 

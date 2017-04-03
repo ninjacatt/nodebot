@@ -111,8 +111,16 @@ function init(app) {
     matches: 'GetNewsFromSource'
   });
 
+  bot.dialog('listNewsSource', (session) => {
+    session.send('Hi! I pull the news from these sources: ');
+    session.send(newsSource.getAllSources());
+    session.endDialog();
+  }).triggerAction({
+    matches: 'listNewsSource',
+  });
+
   bot.dialog('Help', (session) => {
-    session.endDialog('Hi! Try asking me things like \'get news from Times\', \'show me news today\' or \'show me techcrunch news\'');
+    session.endDialog('Hi! Try asking me things like \'show me supported news sources\' \'get news from Times\', \'show me news today\' or \'show me techcrunch news\'');
   }).triggerAction({
     matches: 'Help',
   });
