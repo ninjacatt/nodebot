@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const builder = require('botbuilder');
 const newsSource = require('../resources/newsapi');
+const db = require('./db');
 
 const env = process.env;
 
@@ -20,6 +21,7 @@ function init(app) {
   const recognizer = new builder.LuisRecognizer(env.LUIS_MODEL);
   bot.recognizer(recognizer);
 
+  // Get all news
   bot.dialog('GetNews', [
     (session, args, next) => {
       session.send('Welcome to the Keep Me Updated! We are analyzing your message: \'%s\'', session.message.text);
@@ -69,6 +71,7 @@ function init(app) {
     },
   });
 
+  // Get news from specific source
   bot.dialog('GetNewsFromSource', (session, args) => {
     session.send('Welcome to the Keep Me Updated! We are analyzing your message: \'%s\'', session.message.text);
 
@@ -111,6 +114,7 @@ function init(app) {
     matches: 'GetNewsFromSource'
   });
 
+  // List all news sources
   bot.dialog('listNewsSource', (session) => {
     session.send('Hi! I pull the news from these sources: ');
     session.send(newsSource.getAllSources());
@@ -119,10 +123,40 @@ function init(app) {
     matches: 'listNewsSource',
   });
 
+  // Print out help message
   bot.dialog('Help', (session) => {
     session.endDialog('Hi! Try asking me things like \'show me supported news sources\' \'get news from Times\', \'show me news today\' or \'show me techcrunch news\'');
   }).triggerAction({
     matches: 'Help',
+  });
+
+  // set schedule for chef
+  bot.dialog('setChefSchedule', [
+    (session) => {
+      builder.Prompts.text(session, 'Ahh.. you found my easter egg... So what\'s the secret code?');
+    },
+    (session, results) => {
+      session.userData.secret = results.response;
+      if (session.userData.secret === env.DB_SECRET) {
+        builder.Prompts.text(session, 'Great!, When do you want to make chefs available at 3am? (yyyy-mm-dd)?');
+      } else {
+        session.endDialog('Sorry, wrong answer. You should ask srve for the code and try again');
+      }
+    },
+    (session, results) => {
+      db.setScheduleDate(results.response, 1).then((rows) => {
+        session.endDialog(`Done! I just updated the chef schedules. Chef will available on ${results.response} at 3am. Open the app and see if that works.`);
+      }).catch((err) => {
+        console.log(err);
+        session.endDialog(`Hmm... I didn't feel well and couldn't bring chef online on ${results.response} at 3am. Pick up the phone and call my owner...`);
+      });
+    },
+  ]).triggerAction({
+    matches: 'setChefSchedule',
+    confirmPrompt: 'This will set new chef schedules. Are you sure?',
+  }).cancelAction('cancelSetChefSchedule', 'Set schedule canceled.', {
+    matches: /^(cancel|nevermind)/i,
+    confirmPrompt: 'Are you sure?',
   });
 }
 
