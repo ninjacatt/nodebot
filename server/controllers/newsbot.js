@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 const builder = require('botbuilder');
 const newsSource = require('../resources/newsapi');
 const db = require('./db');
+const moment = require('moment');
 
 const env = process.env;
 
@@ -145,14 +146,20 @@ function init(app) {
       }
     },
     (session, results) => {
-      db.setScheduleDate(results.response, 1).then((rows) => {
-        session.send(`Done! I just updated the chef schedules. Chef will available on ${results.response} at 3am. Open the app and see if that works.`);
+      const scheduleDate = results.response;
+      if (moment(scheduleDate).isValid() && moment(scheduleDate).isAfter(moment())) {
+        db.setScheduleDate(results.response, 1).then((rows) => {
+          session.send(`Done! I just updated the chef schedules. Chef will available on ${scheduleDate} at 3am. Open the app and see if that works.`);
+          session.endDialog();
+        }).catch((err) => {
+          console.log(err);
+          session.send(`Hmm... I didn't feel well and couldn't bring chef online on ${scheduleDate} at 3am. Pick up the phone and call my owner...`);
+          session.endDialog();
+        });
+      } else {
+        session.send('Sorry, you gave me an invalid date so you will have to start again.');
         session.endDialog();
-      }).catch((err) => {
-        console.log(err);
-        session.send(`Hmm... I didn't feel well and couldn't bring chef online on ${results.response} at 3am. Pick up the phone and call my owner...`);
-        session.endDialog();
-      });
+      }
     },
   ]).triggerAction({
     matches: 'setChefSchedule',
