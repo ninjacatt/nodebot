@@ -140,15 +140,18 @@ function init(app) {
       if (session.userData.secret === env.DB_SECRET) {
         builder.Prompts.text(session, 'Great!, When do you want to make chefs available at 3am? (yyyy-mm-dd)?');
       } else {
-        session.endDialog('Sorry, wrong answer. You should ask srve for the code and try again');
+        session.send('Sorry, wrong answer. You should ask srve for the code and try again');
+        session.endDialog();
       }
     },
     (session, results) => {
       db.setScheduleDate(results.response, 1).then((rows) => {
-        session.endDialog(`Done! I just updated the chef schedules. Chef will available on ${results.response} at 3am. Open the app and see if that works.`);
+        session.send(`Done! I just updated the chef schedules. Chef will available on ${results.response} at 3am. Open the app and see if that works.`);
+        session.endDialog();
       }).catch((err) => {
         console.log(err);
-        session.endDialog(`Hmm... I didn't feel well and couldn't bring chef online on ${results.response} at 3am. Pick up the phone and call my owner...`);
+        session.send(`Hmm... I didn't feel well and couldn't bring chef online on ${results.response} at 3am. Pick up the phone and call my owner...`);
+        session.endDialog();
       });
     },
   ]).triggerAction({
