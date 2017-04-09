@@ -153,10 +153,6 @@ function init(app) {
     },
   ]).triggerAction({
     matches: 'setChefSchedule',
-    confirmPrompt: 'This will set new chef schedules. Are you sure?',
-  }).cancelAction('cancelSetChefSchedule', 'Set schedule canceled.', {
-    matches: /^(cancel|nevermind)/i,
-    confirmPrompt: 'Are you sure?',
   });
 }
 
