@@ -44,10 +44,10 @@ module.exports = {
 
         // hardcoded for now since im lazzy today :)
         const values = [
-          [6, `${date} 10:00:00`, `${date} 11:00:00`, `${canWork}`],
-          [7, `${date} 10:00:00`, `${date} 11:00:00`, `${canWork}`],
-          [8, `${date} 10:00:00`, `${date} 11:00:00`, `${canWork}`],
-          [9, `${date} 10:00:00`, `${date} 11:00:00`, `${canWork}`],
+          [6, `${date} 15:00:00`, `${date} 16:00:00`, `${canWork}`],
+          [7, `${date} 15:00:00`, `${date} 16:00:00`, `${canWork}`],
+          [8, `${date} 15:00:00`, `${date} 16:00:00`, `${canWork}`],
+          [9, `${date} 15:00:00`, `${date} 16:00:00`, `${canWork}`],
         ];
         const query = conn.query(queryStr, [values], (errQuery, rows, fields) => {
           if (errQuery) {
