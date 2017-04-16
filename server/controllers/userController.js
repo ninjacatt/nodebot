@@ -2,6 +2,17 @@
 const User = require('../models/user');
 const assert = require('assert');
 
+function saveUser(newUser, res) {
+  console.log(newUser);
+  newUser.save((errSave) => {
+    if (errSave) {
+      res.status(500).send('There was a problem adding user to the database.');
+    } else {
+      res.status(200).send(newUser);
+    }
+  });
+}
+
 function init(app) {
   /**
    * POST users method
@@ -15,21 +26,22 @@ function init(app) {
   app.post('/users', (req, res) => {
     assert(req.body, 'Invalid request. Body has no value');
     assert(req.body.name, 'You need to input name');
-    assert(req.body.email, 'You need to input email');
+    assert(req.body.phone, 'You need to input phone number');
     assert(req.body.password, 'You need to input password');
     assert(typeof (req.body.name), 'string');
-    assert(typeof (req.body.email), 'string');
+    assert(typeof (req.body.phone), 'string');
     assert(typeof (req.body.password), 'string');
 
-    User.create({
+    const newUser = new User({
       name: req.body.name,
-      email: req.body.email,
+      phone: req.body.phone,
       password: req.body.password,
-    }, (err, user) => {
+    });
+    newUser.hashPassword((err, password) => {
       if (err) {
         res.status(500).send('There was a problem adding user to the database.');
       } else {
-        res.status(200).send(user);
+        this.saveUser(newUser, res);
       }
     });
   });
@@ -47,3 +59,4 @@ function init(app) {
 }
 
 module.exports.init = init;
+module.exports.saveUser = saveUser;
