@@ -1,11 +1,12 @@
 1. Add simple bot [Done]
 2. deploy to heroku [Done]
-3. Add more fun bot [on going]
+3. Add more fun bot [Done]
 4. more with mongodb
 5. Define goal for chatbot 
-    a. add better news filter
-    b. bot remind me of grocery
-    c. get menu?
+    a. add better news filter [Done]
+    b. Redminder
+    c. get menu [Done]
+    d. TLDR api
 
 Note:
 1. News api account minhdev
