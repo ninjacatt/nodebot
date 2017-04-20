@@ -4,7 +4,7 @@ const mysql = require('mysql');
 // Private
 const env = process.env;
 
-mongoose.connect('mongodb://sandbox:testpassword@ds141078.mlab.com:41078/sandbox');
+mongoose.connect(env.MONGODB_CONNECTION, { config: { autoIndex: true } });
 
 const connection_pool = mysql.createPool({
   connectionLimit: 10,
