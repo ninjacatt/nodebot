@@ -139,7 +139,7 @@ function init(app) {
     (session, results) => {
       session.userData.secret = results.response;
       if (session.userData.secret === env.DB_SECRET) {
-        builder.Prompts.text(session, 'Great!, When do you want to make chefs available at 3am? (yyyy-mm-dd)?');
+        builder.Prompts.text(session, 'Great!, When do you want to make chefs available at 8am? (yyyy-mm-dd)?');
       } else {
         session.send('Sorry, wrong answer. You should ask srve for the code and try again');
         session.endDialog();
@@ -149,11 +149,11 @@ function init(app) {
       const scheduleDate = results.response;
       if (moment(scheduleDate).isValid() && moment(scheduleDate).isAfter(moment())) {
         db.setScheduleDate(results.response, 1).then((rows) => {
-          session.send(`Done! I just updated the chef schedules. Chef will available on ${scheduleDate} at 3am. Open the app and see if that works.`);
+          session.send(`Done! I just updated the chef schedules. Chef will available on ${scheduleDate} at 8am. Open the app and see if that works.`);
           session.endDialog();
         }).catch((err) => {
           console.log(err);
-          session.send(`Hmm... I didn't feel well and couldn't bring chef online on ${scheduleDate} at 3am. Pick up the phone and call my owner...`);
+          session.send(`Hmm... I didn't feel well and couldn't bring chef online on ${scheduleDate} at 8am. Pick up the phone and call my owner...`);
           session.endDialog();
         });
       } else {
