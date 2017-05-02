@@ -3,6 +3,7 @@ const builder = require('botbuilder');
 const newsSource = require('../resources/newsapi');
 const db = require('./db');
 const moment = require('moment');
+const article = require('../models/article');
 
 const env = process.env;
 
@@ -59,7 +60,10 @@ function init(app) {
 
         const responseMessage = new builder.Message()
                     .attachmentLayout(builder.AttachmentLayout.carousel)
-                    .attachments(json.articles.map(newsAsAttachment));
+                    .attachments(json.articles.map((news) => {
+                      return newsAsAttachment(news, session);
+                    }
+                    ));
 
         session.send(responseMessage);
         session.endDialog();
@@ -112,7 +116,7 @@ function init(app) {
       });
     }
   }).triggerAction({
-    matches: 'GetNewsFromSource'
+    matches: 'GetNewsFromSource',
   });
 
   // List all news sources
@@ -129,6 +133,12 @@ function init(app) {
     session.endDialog('Hi! Try asking me things like \'show me supported news sources\' \'get news from Times\', \'show me news today\' or \'show me techcrunch news\'');
   }).triggerAction({
     matches: 'Help',
+  });
+
+  bot.dialog('Summarize', (session) => {
+    session.endDialog('Summarize the news...');
+  }).triggerAction({
+    matches: 'Summarize',
   });
 
   // set schedule for chef
@@ -167,7 +177,8 @@ function init(app) {
 }
 
 // Helpers
-function newsAsAttachment(news) {
+function newsAsAttachment(news, session) {
+  console.log(session);
   return new builder.HeroCard()
       .title(news.title)
       .subtitle(news.description)
@@ -177,6 +188,7 @@ function newsAsAttachment(news) {
             .title('More details')
             .type('openUrl')
             .value(news.url),
+        builder.CardAction.postBack(session, 'Summarize', 'Summarize'),
       ]);
 }
 
