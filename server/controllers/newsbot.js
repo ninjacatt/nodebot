@@ -26,7 +26,7 @@ function init(app) {
   // Get all news
   bot.dialog('GetNews', [
     (session, args, next) => {
-      session.send('Welcome to the Keep Me Updated! We are analyzing your message: \'%s\'', session.message.text);
+      session.send('Hello! Stay tuned while I\'m analyzing your request: \'%s\'', session.message.text);
 
       // try extracting entities
       const cityEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'builtin.geography.city');
@@ -54,7 +54,15 @@ function init(app) {
       // Get news
       // GET https://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=<key>
       fetch(`https://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=${env.NEWS_API_KEY}`)
-      .then(res => res.json())
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          session.send('Sorry, I coudn\'t get your news at the moment');
+          session.endDialog();
+          throw Error(res.statusText);
+        }
+      })
       .then((json) => {
         session.send('I found %d articles:', json.articles.length);
 
@@ -78,7 +86,7 @@ function init(app) {
 
   // Get news from specific source
   bot.dialog('GetNewsFromSource', (session, args) => {
-    session.send('Welcome to the Keep Me Updated! We are analyzing your message: \'%s\'', session.message.text);
+    session.send('Hello! I\'m analyzing your request: \'%s\'', session.message.text);
 
     // try extracting entities
     const customNewsOrgEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'NewsOrg');
@@ -91,8 +99,16 @@ function init(app) {
       const formattedNewSource = newsSource.getFormattedSourceNews(customNewsOrgEntity.entity);
 
       // Get news
-      fetch(`https://newsapi.org/v1/articles?source=${formattedNewSource}&sortBy=latest&apiKey=${env.NEWS_API_KEY}`)
-      .then(res => res.json())
+      fetch(`https://newsapi.org/v1/articles?source=${formattedNewSource}&sortBy=top&apiKey=${env.NEWS_API_KEY}`)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          session.send('Sorry, I coudn\'t get your news at the moment');
+          session.endDialog();
+          throw Error(res.statusText);
+        }
+      })
       .then((json) => {
         const responseMessage = new builder.Message()
                     .attachmentLayout(builder.AttachmentLayout.carousel)
@@ -106,7 +122,15 @@ function init(app) {
     } else {
       session.send('Hmm we don\'t have that source, but here\'s google news...');
       fetch(`https://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=${env.NEWS_API_KEY}`)
-      .then(res => res.json())
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          session.send('Sorry, I coudn\'t get your news at the moment');
+          session.endDialog();
+          throw Error(res.statusText);
+        }
+      })
       .then((json) => {
         session.send('I found %d articles:', json.articles.length);
 
@@ -144,7 +168,7 @@ function init(app) {
   bot.beginDialogAction('SummarizeNews', '/SummarizeNews');
   bot.dialog('/SummarizeNews', [
     (session, args) => {
-      session.send(`This is the best TLDR I could make for ${args.data}...`);
+      session.send(`This is the best TLDR I could make for the article at ${args.data}`);
       article.tryToSummarizeAsync(args.data).then((summaryJson) => {
         session.send(summaryJson.sm_api_content);
         session.endDialog();
