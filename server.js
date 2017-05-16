@@ -9,6 +9,7 @@ const app = express();
 const server = require('http').createServer(app);
 const userController = require('./server/controllers/userController');
 const newsBotController = require('./server/controllers/newsbot');
+const ping = require('./server/controllers/ping');
 
 app.set('view engine', 'ejs');
 app.set('view options', { layout: false });
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 
 userController.init(app);
 newsBotController.init(app);
+ping.init(app);
 
 // middleware error handling
 app.use((err, req, res, next) => {
