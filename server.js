@@ -6,10 +6,8 @@ const http = require('http');
 const bodyParser= require('body-parser');
 
 const app = express();
-const db = require('./server/controllers/db');
 const server = require('http').createServer(app);
 const userController = require('./server/controllers/userController');
-const botController = require('./server/controllers/bot');
 const newsBotController = require('./server/controllers/newsbot');
 
 app.set('view engine', 'ejs');
@@ -23,7 +21,6 @@ app.use(bodyParser.json());
 // app.use(express.session({ secret: process.env.twilioAccountSid }));
 
 userController.init(app);
-botController.init(app);
 newsBotController.init(app);
 
 // middleware error handling
