@@ -1,14 +1,14 @@
 {
   "name": "pomondoro",
   "version": "1.0.0",
-  "description": "pomodoro app",
+  "description": "ninja news bot app",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://minhdn@bitbucket.org/minhdn/pomondoro.git"
+    "url": "git+https://github.com/ninjacatt/nodebot.git"
   },
   "author": "",
   "license": "ISC",
