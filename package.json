@@ -40,7 +40,7 @@
   },
   "subdomain": "pomodoro",
   "engines": {
-    "node": "6.10.0"
+    "node": "6.11.1"
   },
   "devDependencies": {
     "eslint": "^3.16.1",
